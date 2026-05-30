@@ -240,6 +240,10 @@ function M.picker()
 					save_marks(current)
 					local picker = action_state.get_current_picker(prompt_bufnr)
 					picker:refresh(make_finder(build_entries(current)), { reset_prompt = false })
+					-- Restore focus to the mark's new position (j = moved down by 1)
+					vim.schedule(function()
+						picker:set_selection(j - 1) -- 0-indexed
+					end)
 				end)
 
 				-- Move mark up
@@ -254,6 +258,10 @@ function M.picker()
 					save_marks(current)
 					local picker = action_state.get_current_picker(prompt_bufnr)
 					picker:refresh(make_finder(build_entries(current)), { reset_prompt = false })
+					-- Restore focus to the mark's new position (j = moved up by 1)
+					vim.schedule(function()
+						picker:set_selection(j - 1) -- 0-indexed
+					end)
 				end)
 
 				return true
