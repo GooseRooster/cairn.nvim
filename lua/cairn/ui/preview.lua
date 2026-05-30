@@ -4,9 +4,8 @@
 
 local M = {}
 
-local win_mod = require("cairn.ui.window")
-
 -- We keep a single scratch buf for the "no preview" state
+local NS = vim.api.nvim_create_namespace("cairn_preview")
 local _empty_buf = nil
 
 local function get_empty_buf()
@@ -79,7 +78,7 @@ function M.load(win, file, lnum)
 	end)
 
 	-- Highlight the marked line
-	vim.hl.range(buf, 0, "CairnPreviewLine", { target - 1, 0 }, { target - 1, -1 })
+	vim.hl.range(buf, NS, "CairnPreviewLine", { target - 1, 0 }, { target - 1, -1 })
 end
 
 --- Show empty state in preview window.

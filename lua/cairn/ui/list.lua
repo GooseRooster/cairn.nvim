@@ -1,5 +1,6 @@
 -- cairn/ui/list.lua
 -- Renders the mark list buffer and manages cursor state.
+-- Knows about display format but not about windows or filter state.
 
 local M = {}
 

@@ -1,5 +1,6 @@
 -- cairn/ui/window.lua
 -- Layout calculation and nvim_open_win helpers.
+-- Nothing here knows about marks or filter state.
 
 local M = {}
 
@@ -47,15 +48,26 @@ function M.calculate_layout(config)
 		left_w = math.max(left_w, 30)
 		left_w = math.min(left_w, 50)
 	else
-		left_w = total_w - 2 -- full width minus border
+		left_w = math.floor(total_w * 0.6)
+		left_w = math.max(left_w, 30)
 	end
 
 	local filter_h = 3 -- 1 line content + 2 border
-	local list_h = total_h - filter_h - 2 -- 2 = top/bottom outer margin
+	local total_used_h = math.floor(total_h * 0.85)
+	local list_h = total_used_h - filter_h
 
-	-- Positions (0-indexed for nvim_open_win)
-	local row = 1 -- small top margin
-	local col = 1
+	-- Total picker width
+	local total_picker_w
+	if show_preview then
+		local preview_w = total_w - left_w - 4 -- 4 = borders + gap
+		total_picker_w = left_w + 2 + preview_w
+	else
+		total_picker_w = left_w
+	end
+
+	-- Center on screen
+	local col = math.floor((total_w - total_picker_w) / 2)
+	local row = math.floor((total_h - total_used_h) / 2)
 
 	local layout = {
 		show_preview = show_preview,
@@ -76,12 +88,13 @@ function M.calculate_layout(config)
 	}
 
 	if show_preview then
-		local preview_col = col + left_w + 2 -- +2 for list border + gap
+		local preview_col = col + left_w + 2
+		local preview_w = total_w - preview_col - col - 2
 		layout.preview = {
 			row = row,
 			col = preview_col,
-			width = total_w - preview_col - 2,
-			height = list_h + filter_h, -- full height of left panes combined
+			width = math.max(preview_w, 20),
+			height = list_h + filter_h,
 		}
 	end
 

@@ -21,6 +21,8 @@ local state = {
 	-- buffer ids
 	list_buf = nil,
 	filter_buf = nil,
+	-- window to return focus to on close
+	origin_win = nil,
 	-- current data
 	results = {}, -- filtered {mark, idx, score} list
 	cursor = 1, -- 1-based row in results
@@ -75,7 +77,13 @@ local function open_mark(r, cmd)
 	if not r then
 		return
 	end
+	-- Capture origin before close() nils it
+	local origin = state.origin_win
 	M.close()
+	-- Return focus to the window that spawned the picker, then open the file
+	if origin and vim.api.nvim_win_is_valid(origin) then
+		vim.api.nvim_set_current_win(origin)
+	end
 	vim.cmd((cmd or "edit") .. " " .. vim.fn.fnameescape(r.mark.file))
 	vim.fn.cursor(r.mark.line, r.mark.col)
 end
@@ -268,6 +276,8 @@ function M.open(config)
 	end
 
 	state.config = config
+	state.origin_win = vim.api.nvim_get_current_win()
+
 	win_mod.setup_highlights()
 	prev_mod.setup_highlights()
 
@@ -295,7 +305,6 @@ function M.open(config)
 	)
 
 	if layout.show_preview then
-		-- Preview uses a temporary empty buf; preview.lua swaps it on load
 		local prev_buf = vim.api.nvim_create_buf(false, true)
 		state.prev_win = win_mod.open_win(
 			prev_buf,
@@ -323,25 +332,30 @@ function M.open(config)
 
 	state.open = true
 
-	-- Autocmd: close if we lose focus to an unrelated window
+	-- Collect our window ids for focus checks
+	local function is_our_win(win)
+		return win == state.list_win or win == state.filter_win or win == state.prev_win
+	end
+
 	state.augroup = vim.api.nvim_create_augroup("cairn_picker", { clear = true })
+
+	-- Close if focus moves to a window outside the picker
 	vim.api.nvim_create_autocmd("WinLeave", {
 		group = state.augroup,
 		callback = function()
-			-- Allow moving between our own windows freely
-			local cur = vim.api.nvim_get_current_win()
-			local ours = {
-				[state.list_win] = true,
-				[state.filter_win] = true,
-				[state.prev_win] = true,
-			}
-			if not ours[cur] then
-				vim.schedule(M.close)
-			end
+			-- WinLeave fires before the switch; schedule so the new current win is settled
+			vim.schedule(function()
+				if not state.open then
+					return
+				end
+				if not is_our_win(vim.api.nvim_get_current_win()) then
+					M.close()
+				end
+			end)
 		end,
 	})
 
-	-- Autocmd: close on VimResized (layout would be stale)
+	-- Close on terminal resize (layout would be stale)
 	vim.api.nvim_create_autocmd("VimResized", {
 		group = state.augroup,
 		once = true,
@@ -373,6 +387,7 @@ function M.close()
 	state.prev_win = nil
 	state.list_buf = nil
 	state.filter_buf = nil
+	state.origin_win = nil
 	state.results = {}
 	state.cursor = 1
 
