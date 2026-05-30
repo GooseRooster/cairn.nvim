@@ -18,7 +18,7 @@ local _state = {
 -- Prefix display --------------------------------------------------------------
 
 local INACTIVE_PREFIX = "  / "
-local ACTIVE_PREFIX = "  /> "
+local ACTIVE_PREFIX = "  / > "
 
 local function set_prefix(active)
 	if not vim.api.nvim_buf_is_valid(_state.buf) then
