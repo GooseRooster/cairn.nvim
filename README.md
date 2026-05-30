@@ -14,7 +14,7 @@ and the UI feel of [Telescope](https://github.com/nvim-telescope/telescope.nvim)
 but built from scratch with a normal-mode-first picker and full line/column memory.
 
 ---
-
+See it in action (Youtube):
 
 [![cairn.nvim demo](https://img.youtube.com/vi/O0baxiIQ8nQ/maxresdefault.jpg)](https://youtu.be/O0baxiIQ8nQ)
 
