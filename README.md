@@ -8,7 +8,7 @@ by Harpoon. Marks remember **line and column**, are **scoped to your
 project**, and re-marking a file **updates** its position rather than
 duplicating it.
 
-Think of it as tabs for the files that actually matter — without the clutter.
+Think of it as tabs for the files that actually matter, without the clutter.
 
 
 
