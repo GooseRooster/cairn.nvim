@@ -98,8 +98,8 @@ The preview panel scrolls directly to and highlights the marked line.
 |-----------|---------------------|
 | `<CR>`    | Open file at mark   |
 | `<C-d>`   | Delete selected mark|
-| `<C-S-j>` | Move mark down      |
-| `<C-S-k>` | Move mark up        |
+| `<C-S-j>` | Move mark up      |
+| `<C-S-k>` | Move mark down        |
 
 ### Removing marks
 
@@ -131,8 +131,8 @@ require("cairn").setup({
   -- Keymaps active inside the Telescope picker
   picker = {
     delete    = "<C-d>",   -- delete selected mark
-    move_down = "<C-S-j>", -- move selected mark down
-    move_up   = "<C-S-k>", -- move selected mark up
+    move_down = "<C-S-k>", -- move selected mark down
+    move_up   = "<C-S-j>", -- move selected mark up
   },
 })
 ```
