@@ -17,8 +17,8 @@ but built from scratch with a normal-mode-first picker and full line/column memo
 
 
 
-https://github.com/user-attachments/assets/5d76e584-07ba-4196-9afb-2fb15e8803d6
-
+[https://github.com/user-attachments/assets/5d76e584-07ba-4196-9afb-2fb15e8803d6
+](https://youtu.be/nn5_4AWLq7E)
 
 
 ## How it works
