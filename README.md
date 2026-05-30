@@ -1,3 +1,6 @@
+
+
+
 # cairn.nvim
 
 > Stack your stones. Find your way back.
@@ -11,6 +14,9 @@ and the UI feel of [Telescope](https://github.com/nvim-telescope/telescope.nvim)
 but built from scratch with a normal-mode-first picker and full line/column memory.
 
 ---
+
+https://github.com/user-attachments/assets/47491cb1-90aa-426c-a9b9-3b906ac25e99
+
 
 ## How it works
 
@@ -93,17 +99,8 @@ position.
 
 Press `<leader>mm` (or run `:Cairn`) to open the picker.
 
-```
-┌─ Cairn ──────────────┬─ Preview ───────────────────────────┐
-│  [1] src/api.lua :42 │  39  local function handle(req)     │
-│  [2] src/db.lua :108 │  40    local id = req.params.id     │
-│▶ [3] tests/api.lua:17│  41                                 │
-│                      │▶ 42    return db.find(id)           │
-│                      │  43  end                            │
-├──────────────────────│                                     │
-│  /                   │                                     │
-└──────────────────────┴─────────────────────────────────────┘
-```
+<img width="3377" height="1195" alt="image" src="https://github.com/user-attachments/assets/7984fa6a-21e5-4265-924c-794653a3ded9" />
+
 
 The preview pane shows a real buffer with full syntax highlighting and
 Treesitter, scrolled to and highlighting the marked line. It hides
