@@ -165,7 +165,7 @@ vim.keymap.set("n", "<C-1>",      function() cairn.goto_index(1) end)
 
 ### Wiring up for which-key
 ```lua
-```
+
 {
   "GooseRooster/cairn.nvim",
   dependencies = { 
@@ -180,7 +180,7 @@ vim.keymap.set("n", "<C-1>",      function() cairn.goto_index(1) end)
     })
   end,
 }
-```
+
 ```
 ## API
 
