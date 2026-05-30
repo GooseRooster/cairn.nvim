@@ -15,7 +15,7 @@ but built from scratch with a normal-mode-first picker and full line/column memo
 
 ---
 See it in action (Youtube):
-
+https://youtu.be/O0baxiIQ8nQ
 [![cairn.nvim demo](https://img.youtube.com/vi/O0baxiIQ8nQ/maxresdefault.jpg)](https://youtu.be/O0baxiIQ8nQ)
 
 
