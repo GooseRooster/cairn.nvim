@@ -166,6 +166,9 @@ local function setup_list_keymaps()
 	end, "move up")
 
 	-- Open variants
+	-- Guard: on Windows terminals <C-S-j> often arrives as <C-j> = <NL>, which
+	-- Neovim treats as <CR>. Intercept it here so it can't trigger open_mark.
+	map(buf, "n", "<NL>", function() end, "no-op NL guard")
 	map(buf, "n", "<CR>", function()
 		open_mark(session.results[session.cursor], "edit")
 	end, "open mark")

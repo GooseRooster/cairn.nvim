@@ -16,7 +16,12 @@ local function get_workspace_key()
 	if cfg().use_git_root then
 		local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
 		if vim.v.shell_error == 0 and git_root and git_root ~= "" then
-			return git_root
+			git_root = git_root:gsub("\r$", "") -- strip CRLF artifact from Windows shells
+			git_root = git_root:gsub("^/(%a)/", "%1:/") -- /d/path → d:/path (git-for-Windows)
+			-- Reject non-path output (e.g. cmd.exe ECHO ON echoes the command as line [1])
+			if git_root:match("^/") or git_root:match("^%a:[/\\]") then
+				return git_root
+			end
 		end
 	end
 	return vim.fn.getcwd()
