@@ -204,12 +204,13 @@ local function setup_list_keymaps()
 		if not r then
 			return
 		end
-		local j = r.idx - 1
-		if j < 1 then
+		local all = marks.load()
+		local j = r.idx + 1
+		if j > #all then
 			return
 		end
 		marks.reorder(r.idx, j)
-		session.cursor = session.cursor - 1
+		session.cursor = session.cursor + 1
 		refresh()
 	end, "move mark down")
 
@@ -218,13 +219,12 @@ local function setup_list_keymaps()
 		if not r then
 			return
 		end
-		local all = marks.load()
-		local j = r.idx + 1
-		if j > #all then
+		local j = r.idx - 1
+		if j < 1 then
 			return
 		end
 		marks.reorder(r.idx, j)
-		session.cursor = session.cursor + 1
+		session.cursor = session.cursor - 1
 		refresh()
 	end, "move mark up")
 
