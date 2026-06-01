@@ -16,8 +16,8 @@ M.config = {
 			open_vsplit = "<C-v>",
 			open_tab = "<C-t>",
 			delete = "<C-d>",
-			move_down = "<C-S-k>",
-			move_up = "<C-S-j>",
+			move_down = "<C-j>",
+			move_up = "<C-k>",
 		},
 	},
 

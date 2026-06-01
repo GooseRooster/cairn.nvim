@@ -121,8 +121,8 @@ automatically on narrow terminals.
 | `<C-v>`          | Open in vertical split        |
 | `<C-t>`          | Open in new tab               |
 | `dd` / `<C-d>`   | Delete selected mark          |
-| `<A-j>`          | Move mark down                |
-| `<A-k>`          | Move mark up                  |
+| `<C-j>`          | Move mark down                |
+| `<C-k>`          | Move mark up                  |
 | `/` or `i`       | Enter filter mode             |
 | `q` / `<Esc>`    | Close picker                  |
 
@@ -168,8 +168,8 @@ require("cairn").setup({
       open_vsplit = "<C-v>",  -- open mark in vertical split
       open_tab    = "<C-t>",  -- open mark in new tab
       delete      = "<C-d>",  -- delete selected mark
-      move_down   = "<A-j>",  -- move selected mark down
-      move_up     = "<A-k>",  -- move selected mark up
+      move_down   = "<C-j>",  -- move selected mark down
+      move_up     = "<C-k>",  -- move selected mark up
     },
   },
 
