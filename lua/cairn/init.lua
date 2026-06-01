@@ -9,6 +9,7 @@ M.config = {
 
 	ui = {
 		min_width_for_preview = 120, -- columns below which preview is hidden
+		short_path = true, -- show filename only; set false for full relative path
 
 		keymaps = {
 			open_split = "<C-s>",

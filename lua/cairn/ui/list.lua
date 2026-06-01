@@ -5,23 +5,47 @@
 local M = {}
 
 local win_mod = require("cairn.ui.window")
+local ok_devicons, devicons = pcall(require, "nvim-web-devicons")
 
 -- Render ----------------------------------------------------------------------
 
 --- Build display lines from filtered results.
+--- Returns lines, icon_data where icon_data[i] = {hl, col_start, col_end} or nil.
 --- @param results  table  list of {mark, idx, score} from marks.filter()
---- @return table   lines to set in buffer
-function M.build_lines(results)
+--- @param config   table  cairn config (used for ui.short_path)
+function M.build_lines(results, config)
 	if #results == 0 then
-		return { "  (no marks)" }
+		return { "  (no marks)" }, {}
 	end
+
+	local short = not (config and config.ui and config.ui.short_path == false)
 	local lines = {}
+	local icon_data = {}
+
 	for _, r in ipairs(results) do
-		local rel = vim.fn.fnamemodify(r.mark.file, ":~:.")
-		local line = ("[%d] %s :%d"):format(r.idx, rel, r.mark.line)
-		table.insert(lines, "  " .. line)
+		local name = vim.fn.fnamemodify(r.mark.file, short and ":t" or ":~:.")
+		local prefix = ("  [%d] "):format(r.idx)
+		local icon_str = ""
+		local ihl = nil
+
+		if ok_devicons then
+			local icon, hl = devicons.get_icon(
+				vim.fn.fnamemodify(r.mark.file, ":t"),
+				vim.fn.fnamemodify(r.mark.file, ":e"),
+				{ default = true }
+			)
+			if icon then
+				local col_start = #prefix
+				icon_str = icon .. " "
+				ihl = { hl = hl, col_start = col_start, col_end = col_start + #icon }
+			end
+		end
+
+		table.insert(lines, prefix .. icon_str .. name .. " :" .. r.mark.line)
+		table.insert(icon_data, ihl)
 	end
-	return lines
+
+	return lines, icon_data
 end
 
 --- Write lines into the list buffer, preserving modifiable state.
@@ -34,9 +58,12 @@ function M.render(buf, lines)
 	vim.bo[buf].modifiable = false
 end
 
---- Apply highlights to the list buffer for a given set of results.
---- Highlights the index number distinctly from the path.
-function M.apply_highlights(buf, results)
+--- Apply highlights to the list buffer.
+--- Highlights the index number and, when devicons is available, the file icon.
+--- @param buf        number  list buffer
+--- @param results    table   filtered results (used for index lengths)
+--- @param icon_data  table   per-line icon highlight info from build_lines()
+function M.apply_highlights(buf, results, icon_data)
 	if not vim.api.nvim_buf_is_valid(buf) then
 		return
 	end
@@ -47,9 +74,16 @@ function M.apply_highlights(buf, results)
 		return
 	end
 
-	for i, _ in ipairs(results) do
-		-- Highlight the [N] index token (cols 2-4 typically)
-		vim.hl.range(buf, ns, win_mod.HL.index, { i - 1, 2 }, { i - 1, 4 })
+	for i, r in ipairs(results) do
+		-- Highlight [N] — end col accounts for varying index digit count
+		local idx_end = 2 + 1 + #tostring(r.idx) + 1
+		vim.hl.range(buf, ns, win_mod.HL.index, { i - 1, 2 }, { i - 1, idx_end })
+
+		-- Highlight file type icon if devicons provided one
+		local id = icon_data and icon_data[i]
+		if id and id.hl then
+			vim.hl.range(buf, ns, id.hl, { i - 1, id.col_start }, { i - 1, id.col_end })
+		end
 	end
 end
 

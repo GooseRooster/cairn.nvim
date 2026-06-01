@@ -44,6 +44,7 @@ and SSH reconnections.
 - **Index-based jumps** — `<leader>1` through `<leader>9` for zero-thought navigation
 - **Resize-aware** — picker redraws automatically when the terminal is resized
 - **Persistent storage** — plain JSON on disk, inspect or back it up freely
+- **File type icons** — automatically shown when `nvim-web-devicons` is installed
 - **Zero required dependencies** — no external plugins needed
 
 ---
@@ -51,6 +52,7 @@ and SSH reconnections.
 ## Requirements
 
 - Neovim `>= 0.9`
+- [`nvim-web-devicons`](https://github.com/nvim-tree/nvim-web-devicons) _(optional)_ — enables file type icons in the picker
 
 ---
 
@@ -119,8 +121,8 @@ automatically on narrow terminals.
 | `<C-v>`          | Open in vertical split        |
 | `<C-t>`          | Open in new tab               |
 | `dd` / `<C-d>`   | Delete selected mark          |
-| `<C-S-j>`        | Move mark down                |
-| `<C-S-k>`        | Move mark up                  |
+| `<A-j>`          | Move mark down                |
+| `<A-k>`          | Move mark up                  |
 | `/` or `i`       | Enter filter mode             |
 | `q` / `<Esc>`    | Close picker                  |
 
@@ -157,14 +159,17 @@ require("cairn").setup({
     -- Terminal width (columns) below which the preview pane is hidden
     min_width_for_preview = 120,
 
+    -- Show only the filename in the picker list; set false for full relative path
+    short_path = true,
+
     -- Keymaps active inside the picker
     keymaps = {
-      open_split  = "<C-s>",    -- open mark in horizontal split
-      open_vsplit = "<C-v>",    -- open mark in vertical split
-      open_tab    = "<C-t>",    -- open mark in new tab
-      delete      = "<C-d>",   -- delete selected mark
-      move_down   = "<C-S-k>", -- move selected mark down
-      move_up     = "<C-S-j>", -- move selected mark up
+      open_split  = "<C-s>",  -- open mark in horizontal split
+      open_vsplit = "<C-v>",  -- open mark in vertical split
+      open_tab    = "<C-t>",  -- open mark in new tab
+      delete      = "<C-d>",  -- delete selected mark
+      move_down   = "<A-j>",  -- move selected mark down
+      move_up     = "<A-k>",  -- move selected mark up
     },
   },
 

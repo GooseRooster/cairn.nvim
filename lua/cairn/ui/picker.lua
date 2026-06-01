@@ -82,9 +82,9 @@ local function is_our_win(win)
 end
 
 local function redraw_list()
-	local lines = list_mod.build_lines(session.results)
+	local lines, icon_data = list_mod.build_lines(session.results, session.config)
 	list_mod.render(windows.list_buf, lines)
-	list_mod.apply_highlights(windows.list_buf, session.results)
+	list_mod.apply_highlights(windows.list_buf, session.results, icon_data)
 	session.cursor = list_mod.clamp(session.cursor, session.results)
 	list_mod.set_cursor(windows.list_win, session.cursor)
 	list_mod.highlight_cursor(windows.list_buf, session.cursor, session.results)
