@@ -2,7 +2,6 @@
 ![Neovim](https://img.shields.io/badge/Neovim-0.9+-green?logo=neovim&logoColor=white)
 ![Lua](https://img.shields.io/badge/Made%20with-Lua-blue?logo=lua&logoColor=white)
 ![License](https://img.shields.io/github/license/GooseRooster/cairn.nvim)
-![Stars](https://img.shields.io/github/stars/GooseRooster/cairn.nvim?style=social)
 ![Issues](https://img.shields.io/github/issues/GooseRooster/cairn.nvim)
 ![Last commit](https://img.shields.io/github/last-commit/GooseRooster/cairn.nvim)
 
