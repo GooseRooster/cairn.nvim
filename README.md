@@ -1,5 +1,10 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/GooseRooster/cairn.nvim)
-
+![Neovim](https://img.shields.io/badge/Neovim-0.9+-green?logo=neovim&logoColor=white)
+![Lua](https://img.shields.io/badge/Made%20with-Lua-blue?logo=lua&logoColor=white)
+![License](https://img.shields.io/github/license/GooseRooster/cairn.nvim)
+![Stars](https://img.shields.io/github/stars/GooseRooster/cairn.nvim?style=social)
+![Issues](https://img.shields.io/github/issues/GooseRooster/cairn.nvim)
+![Last commit](https://img.shields.io/github/last-commit/GooseRooster/cairn.nvim)
 
 # cairn.nvim
 
@@ -281,6 +286,15 @@ You can inspect, back up, or version-control these files freely.
 
 Improvements, suggestions, and pull requests are all welcome. Please open an
 issue first for anything beyond small fixes so we can discuss the direction.
+
+---
+
+## Roadmap
+
+The current scope of enhancements and fixes to be worked on. This list will be updated over time (and likely migrated to a separate page eventually)
+
+1. Better handling of deleted marks and auto purging - Upcoming
+2. Auto-track cursor option for marks - Upcoming
 
 ---
 
