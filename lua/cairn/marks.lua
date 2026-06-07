@@ -123,6 +123,36 @@ function M.clear()
 	M.save({})
 end
 
+--- Remove marks whose files no longer exist on disk.
+--- Returns a list of pruned file paths (empty if nothing was removed).
+function M.prune_missing()
+	local all = M.load()
+	local kept, pruned = {}, {}
+	for _, m in ipairs(all) do
+		if vim.fn.filereadable(m.file) == 1 then
+			kept[#kept + 1] = m
+		else
+			pruned[#pruned + 1] = m.file
+		end
+	end
+	if #pruned > 0 then
+		M.save(kept)
+	end
+	return pruned
+end
+
+--- Update line/col for an already-marked file (no-op if the file is not marked).
+function M.update_file_position(file, line, col)
+	local all = M.load()
+	for _, m in ipairs(all) do
+		if m.file == file then
+			m.line = line
+			m.col  = col
+			return M.save(all)
+		end
+	end
+end
+
 -- Fuzzy filter ----------------------------------------------------------------
 
 --- Score a single mark against a query string.

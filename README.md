@@ -159,6 +159,11 @@ require("cairn").setup({
   -- Use git root as workspace key; falls back to cwd when not in a git repo
   use_git_root = true,
 
+  -- When true, marks update to the current cursor position on every BufLeave,
+  -- making them behave as persistent "last location" entries rather than fixed
+  -- anchors. Defaults to false (marks stay where you set them).
+  track_cursor = false,
+
   ui = {
     -- Terminal width (columns) below which the preview pane is hidden
     min_width_for_preview = 120,
@@ -291,9 +296,6 @@ issue first for anything beyond small fixes so we can discuss the direction.
 ## Roadmap
 
 The current scope of enhancements and fixes to be worked on. This list will be updated over time (and likely migrated to a separate page eventually)
-
-1. Better handling of deleted marks and auto purging - Upcoming
-2. Auto-track cursor option for marks - Upcoming
 
 ---
 

@@ -6,6 +6,7 @@ local M = {}
 M.config = {
 	data_dir = vim.fn.stdpath("data") .. "/cairn",
 	use_git_root = true,
+	track_cursor = false,
 
 	ui = {
 		min_width_for_preview = 120, -- columns below which preview is hidden
@@ -66,6 +67,11 @@ function M.remove_current()
 end
 
 function M.goto_index(idx)
+	local pruned = marks().prune_missing()
+	if #pruned > 0 then
+		vim.notify("cairn: removed " .. #pruned .. " missing mark(s)", vim.log.levels.WARN)
+		return
+	end
 	local all = marks().load()
 	local m = all[idx]
 	if not m then
@@ -77,6 +83,13 @@ function M.goto_index(idx)
 end
 
 function M.open_picker()
+	local pruned = marks().prune_missing()
+	if #pruned > 0 then
+		vim.notify(
+			"cairn: removed " .. #pruned .. " missing mark(s):\n" .. table.concat(pruned, "\n"),
+			vim.log.levels.WARN
+		)
+	end
 	picker().open(M.config)
 end
 
@@ -129,6 +142,23 @@ function M.setup(opts)
 	-- Give marks module a reference to config
 	require("cairn.marks")._config = M.config
 	M._register_keymaps()
+	if M.config.track_cursor then
+		vim.api.nvim_create_autocmd("BufLeave", {
+			group = vim.api.nvim_create_augroup("cairn_track_cursor", { clear = true }),
+			callback = function(args)
+				local file = vim.api.nvim_buf_get_name(args.buf)
+				if file == "" or vim.bo[args.buf].buftype ~= "" then
+					return
+				end
+				local win = vim.fn.bufwinid(args.buf)
+				if win == -1 then
+					return
+				end
+				local pos = vim.api.nvim_win_get_cursor(win)
+				marks().update_file_position(file, pos[1], pos[2] + 1)
+			end,
+		})
+	end
 end
 
 return M
